@@ -1,5 +1,7 @@
 package cn.fkj233.blockmiui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -26,9 +28,9 @@ class MainActivity : MIUIActivity(){
                         add("启用") { runCode("enable")}
                         add("禁用") { runCode("disabled") }
                     })
-
-                TextSummaryWithSwitch(TextSummaryV("test", tips = "summary"), SwitchV("test12312312"))
-                TextSummaryArrow(TextSummaryV("test", tips = "summary", onClickListener = { showDialog()}))
+                TextSummaryArrow(TextSummaryV("关于", tips = "开发者 CoolApk@sbmatch", onClickListener = {
+                    showDialogForDevperInfo("把关注交出来","用户: 你寄吧谁啊? 你在狗叫神🐎？\n")
+                }))
 
             }
         }
@@ -62,6 +64,27 @@ class MainActivity : MIUIActivity(){
             }
             setRButton("确定") {
                 ShizukuExecUtils.ShizukuExec("reboot")
+            }
+        }.show()
+    }
+
+    fun showDialogForDevperInfo(title: String, mag: String){
+        MIUIDialog(activity) {
+            setTitle(title)
+            setMessage(mag)
+            setLButton("鬼！") {
+                dismiss()
+            }
+            setRButton("关注") {
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.data = Uri.parse("coolmarket://www.coolapk.com/u/962507")
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    println("当前手机未安装浏览器")
+                }
+                dismiss()
             }
         }.show()
     }
