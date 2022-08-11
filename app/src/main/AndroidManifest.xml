@@ -7,7 +7,8 @@
             android:icon="@mipmap/ic_launcher"
             android:label="BlockMIUI"
             android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true" >
+            android:supportsRtl="true"
+            android:theme="@style/DialogAnim">
         <activity
                 android:name=".MainActivity"
                 android:exported="true" >
@@ -16,6 +17,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:name="rikka.shizuku.ShizukuProvider"
+            android:authorities="${applicationId}.shizuku"
+            android:enabled="true"
+            android:exported="true"
+            android:multiprocess="false"
+            android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
     </application>
 
 </manifest>
