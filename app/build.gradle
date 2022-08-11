@@ -7,7 +7,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "cn.fkj233.blockmiui"
+        applicationId "com.ma.switchfreezer"
         minSdk 26
         targetSdk 32
         versionCode 1

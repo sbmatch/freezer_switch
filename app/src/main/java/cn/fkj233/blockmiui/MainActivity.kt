@@ -6,10 +6,9 @@ import android.os.Looper
 import android.widget.Toast
 import cn.fkj233.ui.activity.MIUIActivity
 import cn.fkj233.ui.activity.view.SpinnerV
+import cn.fkj233.ui.activity.view.SwitchV
 import cn.fkj233.ui.activity.view.TextSummaryV
 import cn.fkj233.ui.dialog.MIUIDialog
-import rikka.shizuku.Shizuku
-import rikka.shizuku.Shizuku.OnRequestPermissionResultListener
 
 class MainActivity : MIUIActivity(){
     private val handler by lazy { Handler(Looper.getMainLooper()) }
@@ -19,14 +18,17 @@ class MainActivity : MIUIActivity(){
     init {
         initView {
             shizuku.add_req_listener()
-            registerMain(getString(R.string.info), false) {
+            registerMain(getString(R.string.AppName), false) {
                 TextSummaryWithSpinner(
                     TextSummaryV("墓碑模式", tips = "暂停执行已缓存的应用"),
-                    SpinnerV("默认值") {
-                        add("默认值") { runCode("default") }
+                    SpinnerV(getSysValue()) {
+                        add("系统默认") { runCode("default")  }
                         add("启用") { runCode("enable")}
                         add("禁用") { runCode("disabled") }
                     })
+
+                TextSummaryWithSwitch(TextSummaryV("test", tips = "summary"), SwitchV("test12312312"))
+                TextSummaryArrow(TextSummaryV("test", tips = "summary", onClickListener = { showDialog()}))
 
             }
         }
@@ -45,7 +47,7 @@ class MainActivity : MIUIActivity(){
         super.onResume()
     }
 
-    private fun showToast(string: String) {
+    fun showToast(string: String) {
         handler.post {
             Toast.makeText(this, string, Toast.LENGTH_LONG).show()
         }
@@ -67,6 +69,16 @@ class MainActivity : MIUIActivity(){
     fun runCode(freezer_status:String){
         ShizukuExecUtils.ShizukuExec("settings put global cached_apps_freezer ${freezer_status}")
         showDialog()
+    }
+
+    fun getSysValue(): String {
+       val aaa = when(SettingsProviderUtils.get(this,"cached_apps_freezer")){
+            "disabled" -> "禁用"
+            "default" -> "系统默认"
+            "enable" -> "启用"
+           else -> {"未配置"}
+       }
+        return aaa
     }
 
 }
